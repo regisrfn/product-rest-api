@@ -20,14 +20,14 @@ public class Product {
 
     @Id
     private UUID productId;
-    
+
     @NotBlank(message = "Value should not be empty")
     private String productName;
 
     @NotBlank(message = "Value should not be empty")
     private String productBrand;
 
-    @NotNull(message = "Value should not be empty")
+    @NotNull(message = "Invalid category value")
     private Category productCategory;
 
     private String productDescription;
@@ -43,8 +43,8 @@ public class Product {
     private Boolean productAvailable;
 
     private ZonedDateTime productCreatedAt;
-    
-    enum Category {
+
+    public enum Category {
         LIMPEZA, BANHO, ALIMENTO
     }
 
@@ -73,8 +73,16 @@ public class Product {
         return productCategory;
     }
 
+    public void setProductCategory(Category productCategory) {
+        this.productCategory = productCategory;
+    }
+
     public void setProductCategory(String productCategory) {
-        this.productCategory = Category.valueOf(productCategory.toUpperCase());
+        try {
+            this.productCategory = Category.valueOf(productCategory.toUpperCase());
+        } catch (Exception e) {
+            this.productCategory = null;
+        }
     }
 
     public String getProductDescription() {
@@ -132,7 +140,5 @@ public class Product {
     public void setProductBrand(String productBrand) {
         this.productBrand = productBrand;
     }
-
-    
 
 }

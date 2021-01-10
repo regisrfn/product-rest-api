@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import com.rufino.server.model.Product;
+import com.rufino.server.model.Product.Category;
 import com.rufino.server.service.ProductService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +75,7 @@ class ServerApplicationTests {
 
 	private void setProduct(Product product) {
 		product.setProductAvailable(true);
-		product.setProductCategory("Banho");
+		product.setProductCategory(Category.BANHO);
 		product.setProductName("Sabonete");
 		product.setProductBrand("Nivea");
 		product.setProductPrice(1.99);
