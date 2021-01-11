@@ -13,7 +13,6 @@ import com.rufino.server.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,48 +80,14 @@ public class ProductController {
     }
 
     @PutMapping("{id}")
-    public Product updateProduct(@PathVariable String id, @Valid @RequestBody Product product,
-            BindingResult bindingResult) {
+    public Product updateProduct(@PathVariable String id, @Valid @RequestBody Product product) {
         try {
             UUID productId = UUID.fromString(id);
-            Product validatedProduct = new Product();
-
-            if (hasErrorsProductRequest(product, bindingResult, validatedProduct))
-                return productService.updateProduct(productId, validatedProduct);
-
-            return productService.updateProduct(productId, product);
+            product.setProductId(productId);
+            return productService.updateProduct(product);
 
         } catch (IllegalArgumentException e) {
             throw new ApiRequestException("Invalid product UUID format", HttpStatus.BAD_REQUEST);
         }
-    }
-
-    private boolean hasErrorsProductRequest(Product product, BindingResult bindingResult, Product validatedProduct) {
-        if (bindingResult.hasErrors()) {
-            // ignore field password
-            if (!bindingResult.hasFieldErrors("productName")) {
-                validatedProduct.setProductName(product.getProductName());
-            }
-            if (!bindingResult.hasFieldErrors("productBrand")) {
-                validatedProduct.setProductBrand(product.getProductBrand());
-            }
-            if (!bindingResult.hasFieldErrors("productCategory")) {
-                validatedProduct.setProductCategory(product.getProductCategory());
-            }
-            if (!bindingResult.hasFieldErrors("productPrice")) {
-                validatedProduct.setProductPrice(product.getProductPrice());
-            }
-            if (!bindingResult.hasFieldErrors("productAvailable")) {
-                validatedProduct.setProductAvailable(product.getProductAvailable());
-            }
-                       
-            validatedProduct.setProductDescription(product.getProductDescription());
-            validatedProduct.setProductSize(product.getProductSize());
-            validatedProduct.setProductColor(product.getProductColor());
-            validatedProduct.setProductCreatedAt(product.getProductCreatedAt());
-            
-            return true;
-        }
-        return false;
     }
 }

@@ -51,4 +51,8 @@ public class ProductService {
         }
 
     }
+
+    public Product updateProduct(Product product) {
+        return productDao.insertProduct(product);
+    }
 }

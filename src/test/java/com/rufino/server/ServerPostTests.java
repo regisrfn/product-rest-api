@@ -160,11 +160,38 @@ public class ServerPostTests {
                 my_obj.put("productPrice", 6.99);
 
                 productList.put(my_obj);
-
+                
+                my_obj= new JSONObject();
                 my_obj.put("productAvailable", "true");
                 my_obj.put("productCategory", "Banho");
                 my_obj.put("productName", "sabonete");
                 my_obj.put("productBrand", "Nivea");
+                my_obj.put("productPrice", 1.99);
+
+                productList.put(my_obj);
+
+                mockMvc.perform(post("/api/v1/product/savelist").contentType(MediaType.APPLICATION_JSON)
+                                .content(productList.toString())).andExpect(status().isOk()).andReturn();
+
+        }
+
+        @Test
+        void itShouldNotSaveProductList() throws Exception {
+                JSONArray productList = new JSONArray();
+                JSONObject my_obj = new JSONObject();
+
+                my_obj.put("productAvailable", "true");
+                my_obj.put("productCategory", "Limpeza");
+                my_obj.put("productName", "detergente");
+                my_obj.put("productBrand", "Ype");
+                my_obj.put("productPrice", 6.99);
+                
+                productList.put(my_obj);
+
+                my_obj= new JSONObject();
+                my_obj.put("productAvailable", "true");
+                my_obj.put("productCategory", "Banho");
+                my_obj.put("productName", "sabonete");
                 my_obj.put("productPrice", 1.99);
 
                 productList.put(my_obj);

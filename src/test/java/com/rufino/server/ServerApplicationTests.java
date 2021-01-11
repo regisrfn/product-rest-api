@@ -3,6 +3,7 @@ package com.rufino.server;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.rufino.server.model.Product;
 import com.rufino.server.model.Product.Category;
@@ -53,7 +54,7 @@ class ServerApplicationTests {
 		Product product2 = new Product();
 		setProduct(product2);
 
-		productService.saveAllProducts(List.of(product1,product2));
+		productService.saveAllProducts(List.of(product1, product2));
 
 		productsList = productService.getAllProducts();
 		assertThat(productsList.size()).isEqualTo(2);
@@ -76,6 +77,96 @@ class ServerApplicationTests {
 
 		productsList = productService.getAllProducts();
 		assertThat(productsList.size()).isEqualTo(2);
+	}
+
+	//////////////////// DELETE /////////////////////////////////
+	@Test
+	void itShouldDeleteProductById() {
+
+		Product product1 = new Product();
+		setProduct(product1);
+		saveAndAssert(product1);
+
+		Product product2 = new Product();
+		setProduct(product2);
+		saveAndAssert(product2, 1, 2);
+
+		List<Product> productsList = productService.getAllProducts();
+		assertThat(productsList.size()).isEqualTo(2);
+
+		assertThat(productService.deleteProductById(product1.getProductId())).isEqualTo(1);
+
+		productsList = productService.getAllProducts();
+		assertThat(productsList.size()).isEqualTo(1);
+
+	}
+
+	@Test
+	void itShouldNotDeleteProductById_productNotFound() {
+
+		Product product1 = new Product();
+		setProduct(product1);
+		saveAndAssert(product1);
+
+		Product product2 = new Product();
+		setProduct(product2);
+		saveAndAssert(product2, 1, 2);
+
+		List<Product> productsList = productService.getAllProducts();
+		assertThat(productsList.size()).isEqualTo(2);
+
+		assertThat(productService.deleteProductById(UUID.randomUUID())).isEqualTo(0);
+
+		productsList = productService.getAllProducts();
+		assertThat(productsList.size()).isEqualTo(2);
+
+	}
+
+	//////////////////// GET Product BY ID/////////////////////////////////
+	@Test
+	void itShouldGetAnProduct() {
+		Product product = new Product();
+		setProduct(product);
+		saveAndAssert(product);
+
+		assertThat(productService.getProductById(product.getProductId())).isNotEqualTo(null);
+
+		assertThat(productService.getProductById(product.getProductId()).getProductBrand()).isEqualTo("Nivea");
+
+		assertThat(productService.getProductById(product.getProductId()).getProductPrice()).isEqualTo(1.99);
+	}
+
+	@Test
+	void itShouldNotGetAnProduct() {
+		Product product = new Product();
+		setProduct(product);
+		saveAndAssert(product);
+
+		assertThat(productService.getProductById(UUID.fromString("846e1a32-f831-4bee-a6bc-673b5f901d7b")))
+				.isEqualTo(null);
+
+	}
+
+	//////////////////// UPDATE ORDER BY ID/////////////////////////////////
+	@Test
+	void itShouldUpdateProduct() {
+
+		Product product1 = new Product();
+		setProduct(product1);
+		saveAndAssert(product1);
+
+		Product product2 = new Product();
+		setProduct(product2);
+		saveAndAssert(product2, 1, 2);
+
+		Product productToUpdate = productService.getProductById(product1.getProductId());
+		productToUpdate.setProductBrand("Dove");
+		productToUpdate.setProductPrice(3.99);
+		productService.updateProduct(productToUpdate);
+
+		assertThat(productService.getProductById(product1.getProductId()).getProductBrand()).isEqualTo("Dove");
+		assertThat(productService.getProductById(product1.getProductId()).getProductPrice()).isEqualTo(3.99);
+		assertThat(productService.getProductById(product1.getProductId()).getProductName()).isEqualTo("Sabonete");
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

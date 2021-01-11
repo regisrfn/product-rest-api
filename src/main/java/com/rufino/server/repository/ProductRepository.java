@@ -1,5 +1,7 @@
 package com.rufino.server.repository;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.rufino.server.dao.JpaDao;
 import com.rufino.server.dao.ProductDao;
 import com.rufino.server.exception.ApiRequestException;
@@ -29,7 +32,7 @@ public class ProductRepository implements ProductDao {
     public ProductRepository(JpaDao jpaDataAccess, JdbcTemplate jdbcTemplate) {
         this.jpaDataAccess = jpaDataAccess;
         this.jdbcTemplate = jdbcTemplate;
-        this.om = new ObjectMapper();
+        this.om = new ObjectMapper().registerModule(new JavaTimeModule());;
 
     }
 
@@ -82,11 +85,16 @@ public class ProductRepository implements ProductDao {
         }
         while (keys.hasNext()) {
             String key = keys.next();
-            if (key.equals("productName") || key.equals("productDescription") || key.equals("productSize") || key.equals("productColor"))
+            if (key.equals("productName") || key.equals("productDescription") || key.equals("productSize")
+                    || key.equals("productColor") || key.equals("productBrand"))
                 sql = sql + key.replaceAll("([A-Z])", "_$1").toLowerCase() + "='" + jsonObject.get(key) + "' ";
             else if (key.equals("productCreatedAt"))
-                sql = sql + key.replaceAll("([A-Z])", "_$1").toLowerCase() + "='" + product.getProductCreatedAt().toString()
-                        + "' ";
+                sql = sql + key.replaceAll("([A-Z])", "_$1").toLowerCase() + "='"
+                        + ZonedDateTime.of(product.getProductCreatedAt().toLocalDateTime(),ZoneId.of("Z"))+ "' ";
+            else if (key.equals("productCategory"))
+                sql = sql + key.replaceAll("([A-Z])", "_$1").toLowerCase() + "="
+                        + product.getProductCategory().ordinal()+ " ";
+
             else if (key.equals("productId"))
                 sql = sql + key.replaceAll("([A-Z])", "_$1").toLowerCase() + "='" + product.getProductId().toString()
                         + "' ";
@@ -107,6 +115,6 @@ public class ProductRepository implements ProductDao {
         } catch (Exception e) {
             return new ArrayList<>();
         }
-        
+
     }
 }
