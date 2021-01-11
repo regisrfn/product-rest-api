@@ -1,5 +1,6 @@
 package com.rufino.server.repository;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -97,5 +98,15 @@ public class ProductRepository implements ProductDao {
             }
         }
         return sql;
+    }
+
+    @Override
+    public List<Product> insertAllProducts(List<Product> pList) {
+        try {
+            return jpaDataAccess.saveAll(pList);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+        
     }
 }

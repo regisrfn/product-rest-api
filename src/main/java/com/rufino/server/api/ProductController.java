@@ -41,6 +41,11 @@ public class ProductController {
         return productService.saveProduct(product);
     }
 
+    @PostMapping("savelist")
+    public List<Product> saveAllProducts(@Valid @RequestBody List<Product> pList) {
+        return productService.saveAllProducts(pList);
+    }
+
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();

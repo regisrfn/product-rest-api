@@ -29,6 +29,7 @@ class ServerApplicationTests {
 
 	}
 
+	//////////////////// SAVE PRODUCT/////////////////////////////////
 	@Test
 	void itShouldSaveIntoDb() {
 		Product product = new Product();
@@ -40,6 +41,26 @@ class ServerApplicationTests {
 		assertEquals(1, countAfterInsert);
 	}
 
+	//////////////////// SAVE All/////////////////////////////////
+	@Test
+	void itShouldSaveAllIntoDb() {
+
+		List<Product> productsList = productService.getAllProducts();
+		assertThat(productsList.size()).isEqualTo(0);
+
+		Product product1 = new Product();
+		setProduct(product1);
+		Product product2 = new Product();
+		setProduct(product2);
+
+		productService.saveAllProducts(List.of(product1,product2));
+
+		productsList = productService.getAllProducts();
+		assertThat(productsList.size()).isEqualTo(2);
+
+	}
+
+	//////////////////// GET ALL/////////////////////////////////
 	@Test
 	void itShouldGetAllProducts() {
 		List<Product> productsList = productService.getAllProducts();
@@ -57,6 +78,7 @@ class ServerApplicationTests {
 		assertThat(productsList.size()).isEqualTo(2);
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	private void saveAndAssert(Product product) {
 		long countBeforeInsert = jdbcTemplate.queryForObject("select count(*) from products", Long.class);
 		assertEquals(0, countBeforeInsert);

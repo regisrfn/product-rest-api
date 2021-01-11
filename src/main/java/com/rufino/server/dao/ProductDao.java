@@ -8,6 +8,8 @@ import com.rufino.server.model.Product;
 public interface ProductDao {
     Product insertProduct(Product product);
 
+    List<Product> insertAllProducts(List<Product> pList);
+
     int deleteProduct(UUID id);
 
     List<Product> getAll();

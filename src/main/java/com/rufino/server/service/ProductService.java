@@ -30,6 +30,10 @@ public class ProductService {
         return productDao.getAll();
     }
 
+    public List<Product> saveAllProducts(List<Product> pList) {
+        return productDao.insertAllProducts(pList);
+    }
+
     public Product getProductById(UUID id) {
         return productDao.getProduct(id);
     }
