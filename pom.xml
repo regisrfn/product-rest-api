@@ -14,7 +14,7 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>13</java.version>
 	</properties>
 
 	<dependencies>
@@ -85,8 +85,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<source>11.0.9.1</source> <!-- same as <java.version> -->
-					<target>11.0.9.1</target> <!-- same as <java.version> -->
+					<release>13.0.5.1</release>
 				</configuration>
 			</plugin>
 
