@@ -155,18 +155,27 @@ public class ServerPostTests {
 
                 my_obj.put("productAvailable", "true");
                 my_obj.put("productCategory", "Limpeza");
-                my_obj.put("productName", "detergente");
+                my_obj.put("productName", "Detergente");
                 my_obj.put("productBrand", "Ype");
                 my_obj.put("productPrice", 6.99);
 
                 productList.put(my_obj);
-                
-                my_obj= new JSONObject();
+
+                my_obj = new JSONObject();
                 my_obj.put("productAvailable", "true");
                 my_obj.put("productCategory", "Banho");
-                my_obj.put("productName", "sabonete");
+                my_obj.put("productName", "Sabonete");
                 my_obj.put("productBrand", "Nivea");
                 my_obj.put("productPrice", 1.99);
+
+                productList.put(my_obj);
+
+                my_obj = new JSONObject();
+                my_obj.put("productAvailable", "true");
+                my_obj.put("productCategory", "Alimento");
+                my_obj.put("productName", "Arroz");
+                my_obj.put("productBrand", "Blue Bom");
+                my_obj.put("productPrice", 30.99);
 
                 productList.put(my_obj);
 
@@ -185,10 +194,10 @@ public class ServerPostTests {
                 my_obj.put("productName", "detergente");
                 my_obj.put("productBrand", "Ype");
                 my_obj.put("productPrice", 6.99);
-                
+
                 productList.put(my_obj);
 
-                my_obj= new JSONObject();
+                my_obj = new JSONObject();
                 my_obj.put("productAvailable", "true");
                 my_obj.put("productCategory", "Banho");
                 my_obj.put("productName", "sabonete");
